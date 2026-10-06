@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicPulse AI - Infrastructure Reporting & Management Platform</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- Vue 3 Framework -->
+    <script src="https://unpkg.com"></script>
+    <!-- Lucide Vector Icons Library -->
+    <script src="https://unpkg.com"></script>
+    <style>
+        @keyframes subtleSlide {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-subtle-slide { animation: subtleSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        [v-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
+
+    <div id="app" class="flex flex-col min-h-screen" v-cloak>
+        <!-- SYSTEM NAVIGATION HEAD -->
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <!-- Platform Branding -->
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-indigo-600 rounded-xl text-white shadow-sm shadow-indigo-200">
+                        <i data-lucide="building-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-base text-slate-900 tracking-tight block leading-tight">CivicPulse AI</span>
+                        <span class="text-[10px] text-slate-500 font-semibold tracking-wider uppercase block">Municipal Management Desk</span>
+                    </div>
+                </div>
+
+                <!-- Live Interface Routing Core -->
+                <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/60 shadow-inner">
+                    <button 
+                        @click="toggleWorkspace('citizen')"
+                        :class="role === 'citizen' ? 'bg-white text-indigo-600 shadow-sm font-semibold' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                        class="flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs transition-all"
+                    >
+                        <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                        <span>Citizen Portal</span>
+                    </button>
+                    <button 
+                        @click="toggleWorkspace('admin')"
+                        :class="role === 'admin' ? 'bg-white text-indigo-600 shadow-sm font-semibold' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                        class="flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs transition-all"
+                    >
+                        <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+                        <span>Admin Dashboard</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ======================================================== -->
+        <!-- VIEWPORTS CONTAINER                                      -->
+        <!-- ======================================================== -->
+        <div class="flex-1 flex flex-col">
+            
+            <!-- SECTION 1: CITIZEN REPORTING PORTAL -->
+            <section v-if="role === 'citizen'" class="flex-1 flex flex-col animate-subtle-slide">
+                <!-- Visual Hero Segment -->
+                <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-white py-14 px-4 text-center border-b border-indigo-950 shadow-md">
+                    <div class="max-w-2xl mx-auto">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-400/20 uppercase tracking-widest inline-block mb-3">
+                            Smart City Framework Active
+                        </span>
+                        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">
+                            Report Local Infrastructure Hazards
+                        </h1>
+                        <p class="text-slate-400 text-xs sm:text-sm mb-6 max-w-lg mx-auto leading-relaxed">
+                            Upload photos of community issues. Our edge AI computer vision architecture parses structural parameters instantly to prioritize repairs.
+                        </p>
+                        
+                        <div class="flex justify-center space-x-3">
+                            <button 
+                                @click="switchCitizenTab('report')"
+                                :class="citizenTab === 'report' ? 'bg-indigo-600 text-white ring-2 ring-indigo-500/50' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'"
+                                class="px-5 py-2 rounded-lg font-semibold text-xs transition-all flex items-center space-x-2 shadow-md"
+                            >
+                                <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
+                                <span>Report Dynamic Incident</span>
+                            </button>
+                            <button 
+                                @click="switchCitizenTab('track')"
+                                :class="citizenTab === 'track' ? 'bg-indigo-600 text-white ring-2 ring-indigo-500/50' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'"
+                                class="px-5 py-2 rounded-lg font-semibold text-xs transition-all flex items-center space-x-2 shadow-md"
+                            >
+                                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                                <span>Track Current Progress</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Processing Workspace Panels -->
+                <div class="max-w-3xl mx-auto w-full px-4 py-10 flex-1 flex flex-col justify-start">
+                    
+                    <!-- View A: Intake Form View -->
+                    <div v-if="citizenTab === 'report'" class="bg-white border border-slate-200 rounded-2xl shadow-md p-5 sm:p-8">
+                        <div v-if="successRecordId" class="text-center py-6 animate-subtle-slide">
+                            <div class="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-100">
+                                <i data-lucide="check-circle" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 mb-1">Incident Authenticated</h3>
+                            <p class="text-xs text-slate-500 mb-5 max-w-sm mx-auto">Your reporting ticket has been indexed inside our live priority triage queues.</p>
+                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl px-5 py-2.5 inline-block mb-6">
+                                <span class="font-mono text-lg font-bold text-indigo-700 tracking-wider">{{ successRecordId }}</span>
+                            </div>
+                            <div>
+                                <button @click="autoRouteToTracker(successRecordId)" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg shadow-sm flex items-center space-x-2 mx-auto transition">
+                                    <span>Proceed to Telemetry Timeline</span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <form v-else @submit.prevent="executeFormSubmission" class="space-y-5">
+                            <div>
+                                <h2 class="text-base font-bold text-slate-900 mb-0.5">Registration Registry</h2>
+                                <p class="text-[11px] text-slate-400">File structural anomalies below to request emergency maintenance dispatch pipelines.</p>
+                            </div>
+
+                            <!-- Photographic Log Drop Area -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Evidence Upload Node</label>
+                                <div class="border-2 border-dashed border-slate-200 bg-slate-50/50 rounded-xl p-6 text-center hover:bg-slate-50 hover:border-indigo-300 transition-all relative overflow-hidden group">
+                                    <div v-if="formImage" class="relative inline-block">
+                                        <img :src="formImage" alt="Incident Data Base Preview" class="max-h-56 rounded-lg border shadow-sm object-cover" />
+                                        <button type="button" @click="flushImageAsset" class="absolute -top-1.5 -right-1.5 bg-rose-600 text-white p-1 rounded-full shadow-sm hover:bg-rose-700 transition">
+                                            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </div>
+                                    <div v-else class="flex flex-col items-center py-4 cursor-pointer">
+                                        <div class="p-2.5 bg-white rounded-xl shadow-sm group-hover:text-indigo-600 text-slate-400 transition mb-3">
+                                            <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+                                        </div>
